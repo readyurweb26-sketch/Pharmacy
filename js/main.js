@@ -23,7 +23,7 @@
 // ============================================
 
 // ---------- CONFIG ----------
-const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbwd5jXRiw7IRspYsxnF1yDHfBnLoZbuYmiihGoo2lOKQrsbdrZO29ksbpH9RkRGXS4B6w/exec';
+const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbwSNjzyC2q4pkkH9SxINjL0j9QOvscJ_ppINjPR3lp37WawZgm1xMVb9KCU2_1LuHUzUw/exec';
 
 // ---------- TRANSLATIONS (i18n) ----------
 const translations = {
@@ -420,8 +420,38 @@ function getTodayTimingPillsHtml(doc) {
   return pillsHtml;
 }
 
+// Detects a normal Google Drive SHARE link (the one you get from
+// Drive's "Share" button, e.g.
+// https://drive.google.com/file/d/FILE_ID/view?usp=sharing) and
+// converts it into a direct-image URL that actually renders inside an
+// <img> tag. A raw Drive share link is an HTML viewer page, not an
+// image file, so without this conversion the browser shows a broken
+// image icon. Anything that isn't a recognized Drive share link is
+// returned unchanged (so plain image URLs, ui-avatars.com fallbacks,
+// etc. keep working exactly as before).
+function convertDriveLinkToDirectUrl(url) {
+  if (!url) return url;
+  // Matches both /file/d/FILE_ID/... and open?id=FILE_ID style links.
+  const match = url.match(/drive\.google\.com\/(?:file\/d\/|open\?id=)([a-zA-Z0-9_-]+)/);
+  if (!match) return url; // not a Drive link — leave untouched
+  const fileId = match[1];
+  // lh3.googleusercontent.com is what Drive/Photos use internally to
+  // serve images directly; it renders reliably as an <img> src and
+  // also accepts a size suffix (here =w800 caps width, keeping
+  // payload small since the CSS will crop/cover it anyway).
+  return `https://lh3.googleusercontent.com/d/${fileId}=w800`;
+}
+
+function fallbackAvatarUrl(doc) {
+  return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(doc.name) + '&background=1A4D3E&color=fff&size=200';
+}
+
 function doctorAvatarUrl(doc) {
-  return doc.image_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(doc.name) + '&background=1A4D3E&color=fff&size=200';
+  const rawUrl = doc.image_url;
+  if (!rawUrl) {
+    return fallbackAvatarUrl(doc);
+  }
+  return convertDriveLinkToDirectUrl(rawUrl);
 }
 
 // ---------- RENDER DOCTORS (Full Page) ----------
@@ -443,7 +473,7 @@ if (doctorsGrid) {
       const experience = doc.experience || experienceDefault;
 
       card.innerHTML = `
-        <img src="${doctorAvatarUrl(doc)}" alt="${doc.name}">
+        <img src="${doctorAvatarUrl(doc)}" alt="${doc.name}" onerror="this.onerror=null; this.src='${fallbackAvatarUrl(doc)}';">
         <div class="info">
           <h4>${doc.name}</h4>
           <p class="speciality">${doc.speciality}</p>
@@ -489,7 +519,7 @@ if (homeDoctorsCarousel) {
       const card = document.createElement('div');
       card.className = 'doctor-card';
       card.innerHTML = `
-        <img src="${doctorAvatarUrl(doc)}" alt="${doc.name}">
+        <img src="${doctorAvatarUrl(doc)}" alt="${doc.name}" onerror="this.onerror=null; this.src='${fallbackAvatarUrl(doc)}';">
         <div class="info">
           <h4>${doc.name}</h4>
           <p class="speciality">${doc.speciality}</p>
@@ -560,7 +590,7 @@ function openDoctorModal(doctorId) {
     const body = document.getElementById('doctorModalBody');
     body.innerHTML = `
       <div style="display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px;">
-        <img src="${doctorAvatarUrl(doc)}" alt="${doc.name}" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:4px solid var(--accent);">
+        <img src="${doctorAvatarUrl(doc)}" alt="${doc.name}" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:4px solid var(--accent);" onerror="this.onerror=null; this.src='${fallbackAvatarUrl(doc)}';">
         <div>
           <h3 style="color:var(--primary-dark);">${doc.name}</h3>
           <p style="color:var(--text-muted); font-size:1.1rem;">${doc.speciality}</p>
@@ -687,6 +717,7 @@ if (contactForm) {
     const formData = new FormData(this);
     const data = {
       name: formData.get('name'),
+      phone: formData.get('phone'),
       email: formData.get('email'),
       message: formData.get('message')
     };
@@ -740,21 +771,6 @@ if (deliveryForm) {
     const result = await postFormData('medicineOrders', data);
     if (result.success) {
       alert(translations[currentLang].alert_order);
-      // TEMP DEBUG — remove this block once the prescription upload issue
-      // is confirmed fixed. Shows exactly what Code.gs received and did,
-      // without needing to open the Apps Script Executions panel at all.
-      if (result.debug) {
-        alert(
-          'DEBUG INFO:\n' +
-          'type sent: ' + result.debug.type + '\n' +
-          'hasPostData: ' + result.debug.hasPostData + '\n' +
-          'prescriptionPresent: ' + result.debug.prescriptionPresent + '\n' +
-          'prescriptionLength: ' + result.debug.prescriptionLength + '\n' +
-          'uploadAttempted: ' + result.debug.prescriptionUploadAttempted + '\n' +
-          'prescriptionError: ' + (result.debug.prescriptionError || '(none)') + '\n' +
-          'prescriptionUrl returned: ' + (result.prescriptionUrl || '(empty)')
-        );
-      }
       this.reset();
     } else {
       alert(translations[currentLang].alert_error);
