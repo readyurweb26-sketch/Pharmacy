@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sharma Medicals – Home</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">Mukti<span>Healthcare</span></a>
+      <nav class="nav-menu" id="navMenu">
+        <ul>
+          <li><a href="index.html" class="active" data-i18n="nav_home">Home</a></li>
+          <li><a href="about.html" data-i18n="nav_about">About</a></li>
+          <li><a href="services.html" data-i18n="nav_services">Services</a></li>
+          <li><a href="doctors.html" data-i18n="nav_doctors">Doctors</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+          <li><a href="appointment.html" class="btn-appointment" data-i18n="nav_appointment">Book Appointment</a></li>
+          <li><a href="delivery.html" class="btn-appointment" style="background:var(--accent);" data-i18n="nav_delivery">Medicine Delivery</a></li>
+        </ul>
+      </nav>
+      <div class="language-wrapper">
+        <button class="lang-dropdown-btn" id="langDropdownBtn">🌐 Language</button>
+        <div class="lang-dropdown-content" id="langDropdownContent">
+          <div class="lang-option" data-lang="en">🇮🇳 English</div>
+          <div class="lang-option" data-lang="hi">🇮🇳 हिंदी</div>
+          <div class="lang-option" data-lang="bn">🇮🇳 বাংলা</div>
+        </div>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-controls="navMenu" aria-expanded="false">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-content">
+      <i class="fas fa-heartbeat hero-icon"></i>
+      <h1 data-i18n="hero_title">Your Health, Our Priority</h1>
+      <p data-i18n="hero_sub">Compassionate care with modern technology. Trusted by over 10,000 families.</p>
+      <a href="appointment.html" class="btn-primary" data-i18n="hero_btn">Make an Appointment</a>
+    </div>
+  </section>
+
+  <section class="section services-preview" data-aos="fade-up">
+    <div class="container">
+      <h2 class="section-title" data-i18n="section_services">Our Medical Services</h2>
+      <div class="grid-3">
+        <div class="glass-card" data-aos="zoom-in" data-aos-delay="100">
+          <i class="fas fa-heartbeat card-icon"></i>
+          <h3>Cardiology</h3>
+          <p>Complete heart care with advanced diagnostics and treatment.</p>
+        </div>
+        <div class="glass-card" data-aos="zoom-in" data-aos-delay="200">
+          <i class="fas fa-brain card-icon"></i>
+          <h3>Neurology</h3>
+          <p>Expert care for brain and nervous system disorders.</p>
+        </div>
+        <div class="glass-card" data-aos="zoom-in" data-aos-delay="300">
+          <i class="fas fa-bone card-icon"></i>
+          <h3>Orthopedics</h3>
+          <p>Bone and joint care, from sports injuries to joint replacement.</p>
+        </div>
+      </div>
+      <div class="center-btn">
+        <a href="services.html" class="btn-outline" data-i18n="nav_services">View All Services</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section doctors-preview bg-light" data-aos="fade-up">
+    <div class="container">
+      <h2 class="section-title" data-i18n="section_doctors">Meet Our Specialists</h2>
+      <!--
+        Auto-scrolling carousel (replaces the old static 4-card grid).
+        #homeDoctorsCarousel is filled in by main.js with a duplicated,
+        horizontally-animating track of all active doctors. Hovering
+        pauses the scroll; see .doctor-carousel-* rules in style.css.
+      -->
+      <div class="doctor-carousel-wrapper" id="homeDoctorsCarousel">
+        <!-- Populated by JS -->
+      </div>
+      <div class="center-btn">
+        <a href="doctors.html" class="btn-outline" data-i18n="nav_doctors">All Doctors</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section testimonials" data-aos="fade-up">
+    <div class="container">
+      <h2 class="section-title" data-i18n="section_testimonials">What Patients Say</h2>
+      <div class="testimonial-slider">
+        <div class="testimonial active">
+          <p>"Excellent care and very friendly staff. Highly recommended!"</p>
+          <span>- Ramesh K.</span>
+        </div>
+        <div class="testimonial">
+          <p>"State-of-the-art facilities and doctors who really listen."</p>
+          <span>- Sunita M.</span>
+        </div>
+        <div class="testimonial">
+          <p>"I got my mother treated here; the whole process was smooth and caring."</p>
+          <span>- Amit S.</span>
+        </div>
+      </div>
+      <div class="slider-controls">
+        <button id="prevTestimonial"><i class="fas fa-chevron-left"></i></button>
+        <button id="nextTestimonial"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4>Mukti Healthcare</h4>
+        <p data-i18n="footer_about">Providing quality healthcare with compassion and innovation.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_quick">Quick Links</h4>
+        <ul>
+          <li><a href="about.html" data-i18n="nav_about">About</a></li>
+          <li><a href="services.html" data-i18n="nav_services">Services</a></li>
+          <li><a href="doctors.html" data-i18n="nav_doctors">Doctors</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_contact">Contact Info</h4>
+        <p><i class="fas fa-map-marker-alt"></i> 123, Health Avenue, Mumbai</p>
+        <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+        <p><i class="fas fa-envelope"></i> info@muktihealthcare.in</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="footer_rights">© 2026 Mukti Healthcare. Powered by ReadYurWeb</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

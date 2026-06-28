@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doctors – Mukti Healthcare</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">Mukti<span>Healthcare</span></a>
+      <nav class="nav-menu" id="navMenu">
+        <ul>
+          <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+          <li><a href="about.html" data-i18n="nav_about">About</a></li>
+          <li><a href="services.html" data-i18n="nav_services">Services</a></li>
+          <li><a href="doctors.html" class="active" data-i18n="nav_doctors">Doctors</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+          <li><a href="appointment.html" class="btn-appointment" data-i18n="nav_appointment">Book Appointment</a></li>
+          <li><a href="delivery.html" class="btn-appointment" style="background:var(--accent);" data-i18n="nav_delivery">Medicine Delivery</a></li>
+        </ul>
+      </nav>
+      <div class="language-wrapper">
+        <button class="lang-dropdown-btn" id="langDropdownBtn">🌐 Language</button>
+        <div class="lang-dropdown-content" id="langDropdownContent">
+          <div class="lang-option" data-lang="en">🇮🇳 English</div>
+          <div class="lang-option" data-lang="hi">🇮🇳 हिंदी</div>
+          <div class="lang-option" data-lang="bn">🇮🇳 বাংলা</div>
+        </div>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-controls="navMenu" aria-expanded="false">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <section class="section" data-aos="fade-up">
+    <div class="container">
+      <h2 class="section-title" data-i18n="section_doctors">Our Doctors</h2>
+      <div class="grid-4" id="doctorsGrid">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4>Mukti Healthcare</h4>
+        <p data-i18n="footer_about">Providing quality healthcare with compassion and innovation.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_quick">Quick Links</h4>
+        <ul>
+          <li><a href="about.html" data-i18n="nav_about">About</a></li>
+          <li><a href="services.html" data-i18n="nav_services">Services</a></li>
+          <li><a href="doctors.html" data-i18n="nav_doctors">Doctors</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_contact">Contact Info</h4>
+        <p><i class="fas fa-map-marker-alt"></i> 123, Health Avenue, Mumbai</p>
+        <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+        <p><i class="fas fa-envelope"></i> info@muktihealthcare.in</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="footer_rights">© 2026 Mukti Healthcare. Powered by ReadYurWeb</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

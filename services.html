@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Services – Mukti Healthcare</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">Mukti<span>Healthcare</span></a>
+      <nav class="nav-menu" id="navMenu">
+        <ul>
+          <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+          <li><a href="about.html" data-i18n="nav_about">About</a></li>
+          <li><a href="services.html" class="active" data-i18n="nav_services">Services</a></li>
+          <li><a href="doctors.html" data-i18n="nav_doctors">Doctors</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+          <li><a href="appointment.html" class="btn-appointment" data-i18n="nav_appointment">Book Appointment</a></li>
+          <li><a href="delivery.html" class="btn-appointment" style="background:var(--accent);" data-i18n="nav_delivery">Medicine Delivery</a></li>
+        </ul>
+      </nav>
+      <div class="language-wrapper">
+        <button class="lang-dropdown-btn" id="langDropdownBtn">🌐 Language</button>
+        <div class="lang-dropdown-content" id="langDropdownContent">
+          <div class="lang-option" data-lang="en">🇮🇳 English</div>
+          <div class="lang-option" data-lang="hi">🇮🇳 हिंदी</div>
+          <div class="lang-option" data-lang="bn">🇮🇳 বাংলা</div>
+        </div>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-controls="navMenu" aria-expanded="false">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <section class="section" data-aos="fade-up">
+    <div class="container">
+      <h2 class="section-title" data-i18n="section_services">Our Services</h2>
+      <div class="grid-3">
+        <div class="glass-card"><i class="fas fa-heartbeat card-icon"></i><h3>Cardiology</h3><p>ECG, Echo, TMT, heart surgeries & more.</p></div>
+        <div class="glass-card"><i class="fas fa-brain card-icon"></i><h3>Neurology</h3><p>Stroke management, EEG, EMG, brain & spine care.</p></div>
+        <div class="glass-card"><i class="fas fa-bone card-icon"></i><h3>Orthopedics</h3><p>Fracture care, joint replacement, arthroscopy.</p></div>
+        <div class="glass-card"><i class="fas fa-child card-icon"></i><h3>Pediatrics</h3><p>Neonatal care, vaccinations, growth monitoring.</p></div>
+        <div class="glass-card"><i class="fas fa-female card-icon"></i><h3>Gynecology</h3><p>Women’s health, antenatal care, infertility treatment.</p></div>
+        <div class="glass-card"><i class="fas fa-eye card-icon"></i><h3>Ophthalmology</h3><p>Eye check-ups, cataract surgery, laser treatments.</p></div>
+        <div class="glass-card"><i class="fas fa-tooth card-icon"></i><h3>Dentistry</h3><p>Root canal, implants, cosmetic dentistry.</p></div>
+        <div class="glass-card"><i class="fas fa-x-ray card-icon"></i><h3>Radiology</h3><p>X-Ray, CT scan, MRI, ultrasound.</p></div>
+        <div class="glass-card"><i class="fas fa-flask card-icon"></i><h3>Pathology</h3><p>Blood tests, biopsy, complete lab diagnostics.</p></div>
+        <!-- Medicine Delivery Card -->
+        <div class="glass-card" style="background: linear-gradient(135deg, var(--accent-light), var(--accent)); border: 2px solid var(--accent);">
+          <i class="fas fa-truck card-icon" style="color: var(--primary-dark);"></i>
+          <h3 style="color: var(--primary-dark);">Medicine Home Delivery</h3>
+          <p>Cash on Delivery • Kaliyaganj, 733129 • 8 AM – 10 PM</p>
+          <a href="delivery.html" class="btn-primary" style="background: var(--primary-dark); color: var(--white); margin-top: 10px;" data-i18n="delivery_order">Place Order →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4>Mukti Healthcare</h4>
+        <p data-i18n="footer_about">Providing quality healthcare with compassion and innovation.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_quick">Quick Links</h4>
+        <ul>
+          <li><a href="about.html" data-i18n="nav_about">About</a></li>
+          <li><a href="services.html" data-i18n="nav_services">Services</a></li>
+          <li><a href="doctors.html" data-i18n="nav_doctors">Doctors</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_contact">Contact Info</h4>
+        <p><i class="fas fa-map-marker-alt"></i> 123, Health Avenue, Mumbai</p>
+        <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+        <p><i class="fas fa-envelope"></i> info@muktihealthcare.in</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="footer_rights">© 2026 Mukti Healthcare. Powered by ReadYurWeb</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

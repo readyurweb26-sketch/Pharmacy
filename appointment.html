@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book Appointment – Mukti Healthcare</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">Mukti<span>Healthcare</span></a>
+      <nav class="nav-menu" id="navMenu">
+        <ul>
+          <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+          <li><a href="about.html" data-i18n="nav_about">About</a></li>
+          <li><a href="services.html" data-i18n="nav_services">Services</a></li>
+          <li><a href="doctors.html" data-i18n="nav_doctors">Doctors</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+          <li><a href="appointment.html" class="btn-appointment active" data-i18n="nav_appointment">Book Appointment</a></li>
+          <li><a href="delivery.html" class="btn-appointment" style="background:var(--accent);" data-i18n="nav_delivery">Medicine Delivery</a></li>
+        </ul>
+      </nav>
+      <div class="language-wrapper">
+        <button class="lang-dropdown-btn" id="langDropdownBtn">🌐 Language</button>
+        <div class="lang-dropdown-content" id="langDropdownContent">
+          <div class="lang-option" data-lang="en">🇮🇳 English</div>
+          <div class="lang-option" data-lang="hi">🇮🇳 हिंदी</div>
+          <div class="lang-option" data-lang="bn">🇮🇳 বাংলা</div>
+        </div>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-controls="navMenu" aria-expanded="false">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <section class="section" data-aos="fade-up">
+    <div class="container" style="max-width:700px; margin:auto;">
+      <h2 class="section-title" data-i18n="nav_appointment">Book Appointment</h2>
+      <form id="appointmentForm" class="glass-card" style="padding: 40px;">
+        <input type="text" name="name" placeholder="Full Name" required data-i18n="form_name" />
+        <input type="tel" name="phone" placeholder="Phone Number" required data-i18n="form_phone" />
+        <input type="email" name="email" placeholder="Email Address" data-i18n="form_email" />
+        <select name="department" required>
+          <option value="">Select Department</option>
+          <option value="Cardiology">Cardiology</option>
+          <option value="Neurology">Neurology</option>
+          <option value="Orthopedics">Orthopedics</option>
+          <option value="Pediatrics">Pediatrics</option>
+          <option value="Gynecology">Gynecology</option>
+          <option value="Ophthalmology">Ophthalmology</option>
+          <option value="Dentistry">Dentistry</option>
+          <option value="Radiology">Radiology</option>
+          <option value="Pathology">Pathology</option>
+        </select>
+        <!--
+          Date field: shows dd-mm-yyyy text (locale-proof) but still opens
+          the native calendar picker on click/focus. The visible text input
+          is read-only and display-only; the REAL value that gets submitted
+          comes from the hidden native <input type="date"> behind it, which
+          main.js keeps in sync. See .date-field-wrapper in style.css and
+          the "DATE FIELD" section in main.js.
+        -->
+        <div class="date-field-wrapper">
+          <input type="text" id="dateDisplay" class="date-display" placeholder="dd-mm-yyyy" readonly required data-i18n="form_date" />
+          <input type="date" id="dateReal" name="date" class="date-real" required tabindex="-1" aria-hidden="true" />
+          <i class="fas fa-calendar-alt date-field-icon"></i>
+        </div>
+        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit" class="btn-primary" data-i18n="form_submit">Submit</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4>Mukti Healthcare</h4>
+        <p data-i18n="footer_about">Providing quality healthcare with compassion and innovation.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_quick">Quick Links</h4>
+        <ul>
+          <li><a href="about.html" data-i18n="nav_about">About</a></li>
+          <li><a href="services.html" data-i18n="nav_services">Services</a></li>
+          <li><a href="doctors.html" data-i18n="nav_doctors">Doctors</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_contact">Contact Info</h4>
+        <p><i class="fas fa-map-marker-alt"></i> 123, Health Avenue, Mumbai</p>
+        <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+        <p><i class="fas fa-envelope"></i> info@muktihealthcare.in</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="footer_rights">© 2026 Mukti Healthcare. Powered by ReadYurWeb</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
