@@ -1,8 +1,16 @@
 // ============================================
-//  MUKTI HEALTHCARE - MAIN JS (v2.2 - FIXED)
+//  SHARMA MEDICAL STORE - MAIN JS (v2.5)
 // ============================================
 //
-// Changelog from v2.1:
+// Changelog (v2.3–v2.5, security hardening pass):
+//  - P0: added escapeHtml() and applied it at all 11 places doctor
+//         data (name, speciality, reg_no, qualification, experience,
+//         id, image_url, weekly timing values) gets interpolated into
+//         innerHTML — previously unescaped, meaning any '<', '>', '&',
+//         or quote character in a Sheet cell would be parsed as real
+//         HTML/script by the browser instead of displayed as text.
+//
+// Changelog (v2.2, functional fixes):
 //  - FIX: delivery form read formData.get('medicine') but the input is
 //         named "medicine_name" -> value was always null. Fixed.
 //  - FIX: delivery form never read the prescription file input, so
@@ -23,7 +31,7 @@
 // ============================================
 
 // ---------- CONFIG ----------
-const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbwSNjzyC2q4pkkH9SxINjL0j9QOvscJ_ppINjPR3lp37WawZgm1xMVb9KCU2_1LuHUzUw/exec';
+const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbx1cZokxmWVZZWrkB2CjsfX0RYrVyHliv3h0s1RXfbXjscwM4A-bvVslG74zZGX3poC/exec';
 
 // ---------- TRANSLATIONS (i18n) ----------
 const translations = {
@@ -69,11 +77,11 @@ const translations = {
     delivery_medicine: "Medicine Name",
     delivery_qty: "Quantity",
     delivery_address: "Delivery Address",
-    delivery_prescription: "Upload Prescription (Optional)",
-    footer_about: "Providing quality healthcare with compassion and innovation.",
+    delivery_prescription: "Add Prescription",
+    footer_about: "Your neighborhood pharmacy and medical store in Kaliyaganj — genuine medicines, doctor consultations, and diagnostic services.",
     footer_quick: "Quick Links",
     footer_contact: "Contact Info",
-    footer_rights: "© 2026 Mukti Healthcare. Powered by ReadYurWeb",
+    footer_rights: "© 2026 Sharma Medical Store. Powered by ReadYurWeb",
     alert_success: "Success!",
     alert_appointment: "Appointment request received!",
     alert_contact: "Thank you for your message! We will get back to you soon.",
@@ -127,11 +135,11 @@ const translations = {
     delivery_medicine: "दवा का नाम",
     delivery_qty: "मात्रा",
     delivery_address: "डिलीवरी पता",
-    delivery_prescription: "पर्ची अपलोड करें (वैकल्पिक)",
-    footer_about: "करुणा और नवाचार के साथ गुणवत्तापूर्ण स्वास्थ्य सेवा प्रदान करना।",
+    delivery_prescription: "पर्ची जोड़ें",
+    footer_about: "कालियागंज में आपकी अपनी फार्मेसी और मेडिकल स्टोर — असली दवाइयां, डॉक्टर सलाह और जांच सेवाएं।",
     footer_quick: "त्वरित लिंक",
     footer_contact: "संपर्क जानकारी",
-    footer_rights: "© 2026 मुक्ति हेल्थकेयर। ReadYurWeb द्वारा संचालित",
+    footer_rights: "© 2026 Sharma Medical Store। ReadYurWeb द्वारा संचालित",
     alert_success: "सफलता!",
     alert_appointment: "अपॉइंटमेंट अनुरोध प्राप्त हुआ!",
     alert_contact: "आपके संदेश के लिए धन्यवाद! हम जल्द ही आपसे संपर्क करेंगे।",
@@ -185,11 +193,11 @@ const translations = {
     delivery_medicine: "ওষুধের নাম",
     delivery_qty: "পরিমাণ",
     delivery_address: "ডেলিভারি ঠিকানা",
-    delivery_prescription: "প্রেসক্রিপশন আপলোড করুন (ঐচ্ছিক)",
-    footer_about: "সহানুভূতি এবং উদ্ভাবনের সাথে মানসম্মত স্বাস্থ্যসেবা প্রদান।",
+    delivery_prescription: "প্রেসক্রিপশন যোগ করুন",
+    footer_about: "কালিয়াগঞ্জে আপনার নিজের ফার্মেসি ও মেডিকেল স্টোর — আসল ওষুধ, ডাক্তার পরামর্শ এবং পরীক্ষা সেবা।",
     footer_quick: "দ্রুত লিঙ্ক",
     footer_contact: "যোগাযোগের তথ্য",
-    footer_rights: "© ২০২৬ মুক্তি হেলথকেয়ার। ReadYurWeb দ্বারা পরিচালিত",
+    footer_rights: "© ২০২৬ Sharma Medical Store। ReadYurWeb দ্বারা পরিচালিত",
     alert_success: "সফল!",
     alert_appointment: "অ্যাপয়েন্টমেন্ট অনুরোধ গৃহীত হয়েছে!",
     alert_contact: "আপনার বার্তার জন্য ধন্যবাদ! আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।",
@@ -397,6 +405,31 @@ function fetchDoctors() {
   return _doctorsPromise;
 }
 
+// P0 SECURITY FIX: every doctor field (name, speciality, reg_no,
+// qualification, experience) comes straight from the Doctors Google
+// Sheet and gets interpolated into innerHTML template literals below.
+// Without escaping, any '<', '>', '&', '"', or "'" character in a Sheet
+// cell is parsed by the browser as real HTML — e.g. a "name" cell
+// containing <img src=x onerror=alert(1)> would execute as JavaScript
+// for every visitor, not display as text. This is stored XSS: the
+// payload lives permanently in the Sheet and re-fires on every page
+// load until someone manually edits the cell. escapeHtml() converts
+// the 5 HTML-significant characters to their entity equivalents so
+// they always render as literal text, never as markup. Apply this to
+// EVERY doctor field before it goes into a template literal that
+// becomes .innerHTML — never skip it, even for fields that "should"
+// be safe (a reg_no or qualification field is just as capable of
+// holding a malicious string as a name field; the column's intended
+// purpose is not a security boundary).
+function escapeHtml(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // ---------- SHARED HELPERS ----------
 function getTodayTimingPillsHtml(doc) {
   const dayNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
@@ -451,7 +484,11 @@ function doctorAvatarUrl(doc) {
   if (!rawUrl) {
     return fallbackAvatarUrl(doc);
   }
-  return convertDriveLinkToDirectUrl(rawUrl);
+  // escapeHtml here because this return value gets interpolated into
+  // src="${...}" in an HTML template literal — same risk as doc.name:
+  // an unescaped " in image_url could break out of the attribute and
+  // inject arbitrary markup/attributes onto the <img> tag.
+  return escapeHtml(convertDriveLinkToDirectUrl(rawUrl));
 }
 
 // ---------- RENDER DOCTORS (Full Page) ----------
@@ -473,14 +510,14 @@ if (doctorsGrid) {
       const experience = doc.experience || experienceDefault;
 
       card.innerHTML = `
-        <img src="${doctorAvatarUrl(doc)}" alt="${doc.name}" onerror="this.onerror=null; this.src='${fallbackAvatarUrl(doc)}';">
+        <img src="${doctorAvatarUrl(doc)}" alt="${escapeHtml(doc.name)}" loading="lazy" onerror="this.onerror=null; this.src='${fallbackAvatarUrl(doc)}';">
         <div class="info">
-          <h4>${doc.name}</h4>
-          <p class="speciality">${doc.speciality}</p>
-          <p class="reg-qual"><strong data-i18n="doctor_reg">Registration No.</strong> ${doc.reg_no}</p>
-          <p class="reg-qual"><strong data-i18n="doctor_experience">Experience</strong> ${experience}</p>
+          <h4>${escapeHtml(doc.name)}</h4>
+          <p class="speciality">${escapeHtml(doc.speciality)}</p>
+          <p class="reg-qual"><strong data-i18n="doctor_reg">Registration No.</strong> ${escapeHtml(doc.reg_no)}</p>
+          <p class="reg-qual"><strong data-i18n="doctor_experience">Experience</strong> ${escapeHtml(experience)}</p>
           <div class="timing-pills">${pillsHtml}</div>
-          <a href="#" class="read-more" data-id="${doc.id}" data-i18n="doctor_readmore">Read More →</a>
+          <a href="#" class="read-more" data-id="${escapeHtml(doc.id)}" data-i18n="doctor_readmore">Read More →</a>
         </div>
       `;
       doctorsGrid.appendChild(card);
@@ -519,10 +556,10 @@ if (homeDoctorsCarousel) {
       const card = document.createElement('div');
       card.className = 'doctor-card';
       card.innerHTML = `
-        <img src="${doctorAvatarUrl(doc)}" alt="${doc.name}" onerror="this.onerror=null; this.src='${fallbackAvatarUrl(doc)}';">
+        <img src="${doctorAvatarUrl(doc)}" alt="${escapeHtml(doc.name)}" onerror="this.onerror=null; this.src='${fallbackAvatarUrl(doc)}';">
         <div class="info">
-          <h4>${doc.name}</h4>
-          <p class="speciality">${doc.speciality}</p>
+          <h4>${escapeHtml(doc.name)}</h4>
+          <p class="speciality">${escapeHtml(doc.speciality)}</p>
         </div>
       `;
       card.addEventListener('click', () => openDoctorModal(doc.id));
@@ -579,7 +616,7 @@ function openDoctorModal(doctorId) {
       slotNames.forEach(slot => {
         const val = doc[`${day}_${slot}`] || '—';
         const isAvailable = val && val.toLowerCase() !== 'closed' && val !== '—';
-        timingHtml += `<td class="${isAvailable ? 'slot-available' : 'slot-unavailable'}">${isAvailable ? val : '✕'}</td>`;
+        timingHtml += `<td class="${isAvailable ? 'slot-available' : 'slot-unavailable'}">${isAvailable ? escapeHtml(val) : '✕'}</td>`;
       });
       timingHtml += `</tr>`;
     });
@@ -590,13 +627,13 @@ function openDoctorModal(doctorId) {
     const body = document.getElementById('doctorModalBody');
     body.innerHTML = `
       <div style="display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px;">
-        <img src="${doctorAvatarUrl(doc)}" alt="${doc.name}" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:4px solid var(--accent);" onerror="this.onerror=null; this.src='${fallbackAvatarUrl(doc)}';">
+        <img src="${doctorAvatarUrl(doc)}" alt="${escapeHtml(doc.name)}" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:4px solid var(--accent);" onerror="this.onerror=null; this.src='${fallbackAvatarUrl(doc)}';">
         <div>
-          <h3 style="color:var(--primary-dark);">${doc.name}</h3>
-          <p style="color:var(--text-muted); font-size:1.1rem;">${doc.speciality}</p>
-          <p><strong data-i18n="doctor_reg">Registration No.</strong> ${doc.reg_no}</p>
-          <p><strong data-i18n="doctor_qual">Qualification</strong> ${doc.qualification}</p>
-          <p><strong data-i18n="doctor_experience">Experience</strong> ${experience}</p>
+          <h3 style="color:var(--primary-dark);">${escapeHtml(doc.name)}</h3>
+          <p style="color:var(--text-muted); font-size:1.1rem;">${escapeHtml(doc.speciality)}</p>
+          <p><strong data-i18n="doctor_reg">Registration No.</strong> ${escapeHtml(doc.reg_no)}</p>
+          <p><strong data-i18n="doctor_qual">Qualification</strong> ${escapeHtml(doc.qualification)}</p>
+          <p><strong data-i18n="doctor_experience">Experience</strong> ${escapeHtml(experience)}</p>
         </div>
       </div>
       <h4 data-i18n="doctor_timing_title" style="color:var(--primary-dark); margin:20px 0 10px;">Available Timings</h4>
@@ -738,8 +775,8 @@ if (contactForm) {
 // input at all, so prescription_url was always sent empty even when a
 // file was attached. Both are fixed below; the field name now matches
 // the HTML exactly, and the file (if present) is base64-encoded and
-// sent as `prescription`, which Code.gs already decodes and uploads to
-// Drive in the MuktiPrescriptions folder.
+// sent as `prescription`, which Code.gs decodes and uploads to the
+// configured Drive folder (see PRESCRIPTION_FOLDER_ID in Code.gs).
 const deliveryForm = document.getElementById('deliveryForm');
 if (deliveryForm) {
   deliveryForm.addEventListener('submit', async function(e) {

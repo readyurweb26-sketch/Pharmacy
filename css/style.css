@@ -6,6 +6,15 @@
   --primary-dark: #0F3328;
   --accent: #C9A96E;
   --accent-light: #E8D5A3;
+  /* P1 accessibility fix: --accent (#C9A96E) only gives a 2.24:1
+     contrast ratio on white, far below WCAG AA's 4.5:1 minimum for
+     normal text. --accent-text is the same gold hue darkened to pass
+     (5.62:1 on white) — use this instead of --accent for any text sitting
+     on a white/light card background (e.g. "Read More" links, names).
+     --accent itself is still fine for icons (decorative, exempt from
+     text contrast rules) and for text on the dark green footer, where
+     it already passes at 6.16:1. */
+  --accent-text: #786542;
   --bg-warm: #FCF8F2;
   --text-dark: #1E1E1E;
   --text-muted: #5A5A5A;
@@ -74,7 +83,7 @@ h1, h2, h3, h4 {
   flex-shrink: 0;
 }
 .logo span {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .nav-menu ul {
@@ -414,7 +423,7 @@ h1, h2, h3, h4 {
 }
 
 .doctor-card .read-more {
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 600;
   text-decoration: none;
   font-size: 0.85rem;
@@ -538,6 +547,24 @@ h1, h2, h3, h4 {
   color: #ccc;
 }
 
+/* P2 accessibility fix: placeholder text is not a substitute for a
+   real <label> — it disappears the moment a user types, and many
+   screen readers don't reliably announce it. .sr-only keeps a real
+   <label> in the DOM (so assistive tech always has one) while keeping
+   it visually invisible, so the existing placeholder-only look is
+   unchanged for sighted users. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ----- FORMS ----- */
 form {
   display: flex;
@@ -639,7 +666,7 @@ form .form-hint {
   display: block;
   margin-top: 12px;
   font-weight: 600;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .slider-controls {
   display: flex;
@@ -939,5 +966,47 @@ form .form-hint {
   .lang-option {
     padding: 6px 14px;
     font-size: 0.75rem;
+  }
+}
+
+/* ========================================
+   PRINT STYLESHEET
+   ======================================== */
+/* P3: minimal print rules. The most realistic reason someone prints
+   this site is the doctors page (a paper copy of a weekly schedule) or
+   the contact page (address/phone/hours). Without these rules, the
+   browser would print the full page as-is — header nav, hamburger
+   button, language dropdown, and the hero section's dark green
+   gradient background all included, which wastes ink/toner on
+   decorative chrome that's meaningless on paper, and a dark gradient
+   background in particular tends to print as an ugly black block on
+   most home/office printers. */
+@media print {
+  .header, .footer, .hamburger, .language-wrapper,
+  .btn-primary, .btn-outline, .btn-appointment,
+  .slider-controls, .modal-overlay, .center-btn,
+  form button[type="submit"] {
+    display: none !important;
+  }
+  .hero {
+    background: none !important;
+    color: var(--text-dark) !important;
+    padding: 20px 0 !important;
+  }
+  .hero-icon {
+    display: none !important;
+  }
+  body {
+    background: var(--white) !important;
+    color: var(--text-dark) !important;
+  }
+  .glass-card, .doctor-card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    break-inside: avoid;
+  }
+  a {
+    color: var(--text-dark) !important;
+    text-decoration: none !important;
   }
 }

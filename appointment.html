@@ -3,7 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Book Appointment – Mukti Healthcare</title>
+
+  <title>Book Appointment – Sharma Medical Store, Kaliyaganj</title>
+  <meta name="description" content="Book a doctor appointment at Sharma Medical Store, Kaliyaganj. Choose your department and preferred date — we'll confirm your visit." />
+  <link rel="canonical" href="https://sharmamedicalcare.vercel.app/appointment.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Book Appointment – Sharma Medical Store, Kaliyaganj" />
+  <meta property="og:description" content="Book a doctor appointment at Sharma Medical Store, Kaliyaganj." />
+  <meta property="og:url" content="https://sharmamedicalcare.vercel.app/appointment.html" />
+  <meta property="og:site_name" content="Sharma Medical Store" />
+  <meta property="og:locale" content="en_IN" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Book Appointment – Sharma Medical Store, Kaliyaganj" />
+  <meta name="twitter:description" content="Book a doctor appointment at Sharma Medical Store, Kaliyaganj." />
+
+  <meta name="theme-color" content="#1A4D3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231A4D3E'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle' fill='%23C9A96E'%3E%2B%3C/text%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
@@ -11,7 +33,7 @@
 <body>
   <header class="header">
     <div class="container nav-container">
-      <a href="index.html" class="logo">Mukti<span>Healthcare</span></a>
+      <a href="index.html" class="logo">Sharma<span>Medical Store</span></a>
       <nav class="nav-menu" id="navMenu">
         <ul>
           <li><a href="index.html" data-i18n="nav_home">Home</a></li>
@@ -41,10 +63,17 @@
     <div class="container" style="max-width:700px; margin:auto;">
       <h2 class="section-title" data-i18n="nav_appointment">Book Appointment</h2>
       <form id="appointmentForm" class="glass-card" style="padding: 40px;">
-        <input type="text" name="name" placeholder="Full Name" required data-i18n="form_name" />
-        <input type="tel" name="phone" placeholder="Phone Number" required data-i18n="form_phone" />
-        <input type="email" name="email" placeholder="Email Address" data-i18n="form_email" />
-        <select name="department" required>
+        <label for="apptName" class="sr-only">Full Name</label>
+        <input type="text" id="apptName" name="name" placeholder="Full Name" required data-i18n="form_name" />
+
+        <label for="apptPhone" class="sr-only">Phone Number</label>
+        <input type="tel" id="apptPhone" name="phone" placeholder="Phone Number" required data-i18n="form_phone" />
+
+        <label for="apptEmail" class="sr-only">Email Address</label>
+        <input type="email" id="apptEmail" name="email" placeholder="Email Address" data-i18n="form_email" />
+
+        <label for="apptDepartment" class="sr-only">Select Department</label>
+        <select id="apptDepartment" name="department" required>
           <option value="">Select Department</option>
           <option value="Cardiology">Cardiology</option>
           <option value="Neurology">Neurology</option>
@@ -64,12 +93,14 @@
           main.js keeps in sync. See .date-field-wrapper in style.css and
           the "DATE FIELD" section in main.js.
         -->
+        <label for="dateDisplay" class="sr-only">Preferred Date</label>
         <div class="date-field-wrapper">
           <input type="text" id="dateDisplay" class="date-display" placeholder="dd-mm-yyyy" readonly required data-i18n="form_date" />
           <input type="date" id="dateReal" name="date" class="date-real" required tabindex="-1" aria-hidden="true" />
           <i class="fas fa-calendar-alt date-field-icon"></i>
         </div>
-        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+        <label for="apptMessage" class="sr-only">Your Message</label>
+        <textarea id="apptMessage" name="message" placeholder="Your Message" rows="5" required></textarea>
         <button type="submit" class="btn-primary" data-i18n="form_submit">Submit</button>
       </form>
     </div>
@@ -78,8 +109,8 @@
   <footer class="footer">
     <div class="container footer-grid">
       <div class="footer-col">
-        <h4>Mukti Healthcare</h4>
-        <p data-i18n="footer_about">Providing quality healthcare with compassion and innovation.</p>
+        <h4>Sharma Medical Store</h4>
+        <p data-i18n="footer_about">Your neighborhood pharmacy and medical store in Kaliyaganj — genuine medicines, doctor consultations, and diagnostic services.</p>
       </div>
       <div class="footer-col">
         <h4 data-i18n="footer_quick">Quick Links</h4>
@@ -92,13 +123,13 @@
       </div>
       <div class="footer-col">
         <h4 data-i18n="footer_contact">Contact Info</h4>
-        <p><i class="fas fa-map-marker-alt"></i> 123, Health Avenue, Mumbai</p>
-        <p><i class="fas fa-phone"></i> +91 98765 43210</p>
-        <p><i class="fas fa-envelope"></i> info@muktihealthcare.in</p>
+        <p><i class="fas fa-map-marker-alt"></i> SH 10A, Uttar Chairailpara, Kaliyaganj, West Bengal 733129</p>
+        <p><i class="fas fa-phone"></i> <a href="tel:+919475610209" style="color:inherit; text-decoration:none;">+91 94756 10209</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:info@muktihealthcare.in" style="color:inherit; text-decoration:none;">info@muktihealthcare.in</a></p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p data-i18n="footer_rights">© 2026 Mukti Healthcare. Powered by ReadYurWeb</p>
+      <p data-i18n="footer_rights">© 2026 Sharma Medical Store. Powered by ReadYurWeb</p>
     </div>
   </footer>
 
